@@ -1,4 +1,4 @@
-package hass
+package internal
 
 import (
 	"log"
@@ -6,9 +6,6 @@ import (
 	"encoding/json"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-
-	"g4iyt.uk/rigctld-mqtt/internal/config"
-	"g4iyt.uk/rigctld-mqtt/internal/poller"
 )
 
 var hsDevice = map[string]interface{}{
@@ -18,7 +15,7 @@ var hsDevice = map[string]interface{}{
 	"manufacturer": "G4IYT",
 }
 
-func PublishHassDiscovery(mqttClient mqtt.Client, sensors []poller.RigctldSensor, cfg *config.Config) {
+func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *Config) {
 	for _, sensor := range sensors {
 		topic := fmt.Sprintf("homeassistant/sensor/%s_%s/config", cfg.HassName, sensor.Name)
 		sensorConfig := map[string]interface{}{

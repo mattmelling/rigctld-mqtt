@@ -1,4 +1,4 @@
-package config
+package internal
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ type Config struct {
 	HassName string
 }
 
-func Load() (*Config, error) {
+func LoadConfig() (*Config, error) {
 	rigctldAddr := os.Getenv("RIGCTL_ADDR")
 	if rigctldAddr == "" {
 		return nil, fmt.Errorf("RIGCTL_ADDR not specified")

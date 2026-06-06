@@ -10,13 +10,10 @@ import (
 	"fmt"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-
-	"g4iyt.uk/rigctld-mqtt/internal/config"
-	"g4iyt.uk/rigctld-mqtt/internal/poller"
-	"g4iyt.uk/rigctld-mqtt/internal/hass"
+	. "g4iyt.uk/rigctld-mqtt/internal"
 )
 
-var sensors = []poller.RigctldSensor {
+var sensors = []RigctldSensor {
 	{
 		Command: "f",
 		Name: "frequency",
@@ -41,7 +38,7 @@ var sensors = []poller.RigctldSensor {
 
 func main() {
 
-	cfg, err := config.Load()
+	cfg, err := LoadConfig()
 	if err != nil {
 		log.Fatalf("Configuration error: %v", err)
 	}
@@ -67,10 +64,10 @@ func main() {
 	defer mqttClient.Disconnect(250)
 
 	if cfg.HassDiscovery {
-		hass.PublishHassDiscovery(mqttClient, sensors, cfg)
+		PublishHassDiscovery(mqttClient, sensors, cfg)
 	}
 	
-	resultsChan := make(chan poller.RigctldCommandResult, 100)
+	resultsChan := make(chan RigctldCommandResult, 100)
 	go func() {
 		for {
 			select {
@@ -84,7 +81,7 @@ func main() {
 		}
 	}()
 	
-	daemonPoller := poller.NewPoller(cfg, resultsChan, sensors)
+	daemonPoller := NewPoller(cfg, resultsChan, sensors)
 	daemonPoller.Start(ctx)
 }
 	

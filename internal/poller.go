@@ -1,4 +1,4 @@
-package poller
+package internal
 
 import (
 	"context"
@@ -7,8 +7,6 @@ import (
 	"time"
 	"bufio"
 	"fmt"
-
-	"g4iyt.uk/rigctld-mqtt/internal/config"
 )
 
 type RigctldSensor struct {
@@ -20,7 +18,7 @@ type RigctldSensor struct {
 }
 
 type Poller struct {
-	config config.Config
+	config Config
 	resultsChan chan<-RigctldCommandResult
 	sensors []RigctldSensor
 }
@@ -31,7 +29,7 @@ type RigctldCommandResult struct {
 	Response string
 }
 
-func NewPoller(cfg *config.Config, resultsChan chan<- RigctldCommandResult, sensors []RigctldSensor) *Poller {
+func NewPoller(cfg *Config, resultsChan chan<- RigctldCommandResult, sensors []RigctldSensor) *Poller {
 	return &Poller {
 		config: *cfg,
 		resultsChan: resultsChan,
