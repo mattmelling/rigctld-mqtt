@@ -8,11 +8,13 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-var hsDevice = map[string]interface{}{
-	"identifiers": []string{"g4iyt_rigctld_bridge"},
-	"name": "Rigctld",
-	"model": "Rigctld",
-	"manufacturer": "G4IYT",
+func generateDeviceIdentifier(cfg *Config) map[string]interface{} {
+	return map[string]interface{}{
+		"identifiers": []string{"g4iyt_rigctld_bridge"},
+		"name": cfg.HassDisplayName,
+		"model": "Rigctld",
+		"manufacturer": "G4IYT",
+	}
 }
 
 func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *Config) {
@@ -23,7 +25,7 @@ func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *
 			"unique_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
 			"state_topic": fmt.Sprintf("%s/state/%s", cfg.Topic, sensor.Name),
 			"icon": sensor.HAIcon,
-			"device": hsDevice,
+			"device": generateDeviceIdentifier(cfg),
 		}
 
 		if sensor.HAUnit != "" {

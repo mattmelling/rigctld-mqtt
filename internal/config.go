@@ -12,17 +12,18 @@ type Config struct {
 	MqttAddr string
 	MqttUser string
 	MqttPass string
-	MqttClient string
+	MqttClientId string
 	Topic string
 	PollInterval time.Duration
 	HassDiscovery bool
 	HassName string
+	HassDisplayName string
 }
 
 func LoadConfig() (*Config, error) {
-	rigctldAddr := os.Getenv("RIGCTL_ADDR")
+	rigctldAddr := os.Getenv("RIGCTLD_ADDR")
 	if rigctldAddr == "" {
-		return nil, fmt.Errorf("RIGCTL_ADDR not specified")
+		return nil, fmt.Errorf("RIGCTLD_ADDR not specified")
 	}
 
 	mqttAddr := os.Getenv("MQTT_ADDR")
@@ -32,9 +33,9 @@ func LoadConfig() (*Config, error) {
 
 	mqttUser := os.Getenv("MQTT_USER")
 	mqttPass := os.Getenv("MQTT_PASS")
-	mqttClient := os.Getenv("MQTT_CLIENT")
-	if mqttClient == "" {
-		mqttClient = "rigctld"
+	mqttClientId := os.Getenv("MQTT_CLIENT_ID")
+	if mqttClientId == "" {
+		mqttClientId = "rigctld"
 	}
 
 	mqttTopic := os.Getenv("MQTT_TOPIC")
@@ -63,14 +64,21 @@ func LoadConfig() (*Config, error) {
 		hassName = strings.Replace(mqttTopic, "/", "_", -1)
 	}
 
+	hassDisplayName := os.Getenv("HASS_NAME")
+	if hassDisplayName == "" {
+		hassDisplayName = "Rigctld"
+	}
+
 	return &Config {
 		RigctldAddr: rigctldAddr,
 		MqttAddr: mqttAddr,
 		MqttUser: mqttUser,
 		MqttPass: mqttPass,
+		MqttClientId: mqttClientId,
 		PollInterval: interval,
 		Topic: mqttTopic,
 		HassDiscovery: hassDiscovery,
 		HassName: hassName,
+		HassDisplayName: hassDisplayName,
 	}, nil
 }

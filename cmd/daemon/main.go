@@ -53,6 +53,9 @@ func main() {
 	if cfg.MqttPass != "" {
 		opts.SetPassword(cfg.MqttPass)
 	}
+	if cfg.MqttClientId != "" {
+		opts.SetClientID(cfg.MqttClientId)
+	}
 	opts.SetAutoReconnect(true)
 	opts.SetConnectTimeout(5 * time.Second)
 
