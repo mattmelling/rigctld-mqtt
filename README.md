@@ -40,7 +40,7 @@ WantedBy=multi-user.target
 
 Enable and start with `systemctl enable --now rigctld-mqtt-ic7300.service`.
 
-!(./img/sensor.png)
+![Home Assistant screenshot showing sensor](./img/sensor.png)
 
 ## Configuration
 All configuration is via environment variable. Available options are:
