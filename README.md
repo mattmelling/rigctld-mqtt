@@ -29,6 +29,7 @@ Environment=RIGCTLD_ADDR=localhost:4532
 Environment=MQTT_ADDR=localhost:1883
 Environment=MQTT_USER=rigctld
 Environment=MQTT_PASS=xxx
+Environment=MQTT_TOPIC=rigctld/ic7300
 Environment=MQTT_CLIENT_ID=rigctld-ic7300
 Environment=POLL_INTERVAL=2s
 Environment=HASS_DISCOVERY=1
@@ -49,6 +50,7 @@ All configuration is via environment variable. Available options are:
 - `MQTT_ADDR`: Address of MQTT server, e.g. `localhost:1883`
 - `MQTT_USER`: MQTT username. Omit if not required.
 - `MQTT_PASS`: MQTT password. Omit if not required.
+- `MQTT_TOPIC`: Base topic to publish under
 - `MQTT_CLIENT_ID`: Client ID for MQTT connection, omit if not required.
 - `POLL_INTERVAL`: How often to poll `rigctld` for state. Defaults to `10s`
 - `HASS_DISCOVERY`: Omit if not required. Set to any value to publish Home Assistant auto-discovery data. This makes your rigctl sensors appear automatically in Home Assistant.
