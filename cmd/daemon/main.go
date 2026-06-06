@@ -51,7 +51,7 @@ func publishHassDiscovery(mqttClient mqtt.Client, cfg *config.Config) {
 		sensorConfig := map[string]interface{}{
 			"name": sensor.HAName,
 			"unique_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
-			"state_topic": fmt.Sprintf("%s/%s", cfg.Topic, sensor.Name),
+			"state_topic": fmt.Sprintf("%s/state/%s", cfg.Topic, sensor.Name),
 			"icon": sensor.HAIcon,
 			"device": hsDevice,
 		}
@@ -108,7 +108,7 @@ func main() {
 			select {
 			case res := <-resultsChan:
 				// log.Printf("%s = %s", res.Command, res.Response)
-				topic := fmt.Sprintf("%s/%s", cfg.Topic, res.Name)
+				topic := fmt.Sprintf("%s/state/%s", cfg.Topic, res.Name)
 				mqttClient.Publish(topic, 1, false, res.Response)
 			case <-ctx.Done():
 				return
