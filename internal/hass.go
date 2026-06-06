@@ -1,38 +1,53 @@
 package internal
 
 import (
-	"log"
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"log"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-func generateDeviceIdentifier(cfg *Config) map[string]interface{} {
-	return map[string]interface{}{
-		"identifiers": []string{
-			fmt.Sprintf("g4iyt_rigctld_bridge_%s", cfg.HassName),
-		},
-		"name": cfg.HassDisplayName,
-		"model": "Rigctld",
-		"manufacturer": "G4IYT",
-	}
+type HassDevice struct {
+	Identifiers  []string `json:"identifiers"`
+	Name         string   `json:"name"`
+	Model        string   `json:"model"`
+	Manufacturer string   `json:"manufacturer"`
+}
+
+type HassSensorConfig struct {
+	Name              string      `json:"name"`
+	UniqueID          string      `json:"unique_id"`
+	ObjectID          string      `json:"object_id"`
+	StateTopic        string      `json:"state_topic"`
+	Icon              string      `json:"icon,omitempty"`
+	UnitOfMeasurement string      `json:"unit_of_measurement,omitempty"`
+	Device            *HassDevice `json:"device,omitempty"`
 }
 
 func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *Config) {
+	device := &HassDevice{
+		Identifiers: []string{
+			fmt.Sprintf("g4iyt_rigctld_bridge_%s", cfg.HassName),
+		},
+		Name:         cfg.HassDisplayName,
+		Model:        "Rigctld",
+		Manufacturer: "G4IYT",
+	}
+
 	for _, sensor := range sensors {
 		topic := fmt.Sprintf("homeassistant/sensor/%s_%s/config", cfg.HassName, sensor.Name)
-		sensorConfig := map[string]interface{}{
-			"name": sensor.HAName,
-			"unique_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
-			"object_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
-			"state_topic": fmt.Sprintf("%s/state/%s", cfg.Topic, sensor.Name),
-			"icon": sensor.HAIcon,
-			"device": generateDeviceIdentifier(cfg),
+		sensorConfig := HassSensorConfig{
+			Name:       sensor.HAName,
+			UniqueID:   fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
+			ObjectID:   fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
+			StateTopic: fmt.Sprintf("%s/state/%s", cfg.Topic, sensor.Name),
+			Icon:       sensor.HAIcon,
+			Device:     device,
 		}
 
 		if sensor.HAUnit != "" {
-			sensorConfig["unit_of_measurement"] = sensor.HAUnit
+			sensorConfig.UnitOfMeasurement = sensor.HAUnit
 		}
 
 		payload, err := json.Marshal(sensorConfig)
