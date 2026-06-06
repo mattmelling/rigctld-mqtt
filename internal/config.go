@@ -21,15 +21,15 @@ type Config struct {
 }
 
 func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
+	if value := os.Getenv(key); value != "" {
 		return value
 	}
 	return fallback
 }
 
 func getEnvBool(key string, fallback bool) bool {
-	value, ok := os.LookupEnv(key)
-	if !ok {
+	value := os.Getenv(key)
+	if value == "" {
 		return fallback
 	}
 	value = strings.ToLower(value)
