@@ -33,6 +33,7 @@ Environment=MQTT_TOPIC=rigctld/ic7300
 Environment=MQTT_CLIENT_ID=rigctld-ic7300
 Environment=POLL_INTERVAL=2s
 Environment=HASS_DISCOVERY=1
+Environment=HASS_NAME="Rigctld IC7300"
 
 [Install]
 WantedBy=multi-user.target

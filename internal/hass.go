@@ -10,7 +10,9 @@ import (
 
 func generateDeviceIdentifier(cfg *Config) map[string]interface{} {
 	return map[string]interface{}{
-		"identifiers": []string{"g4iyt_rigctld_bridge"},
+		"identifiers": []string{
+			fmt.Sprintf("g4iyt_rigctld_bridge_%s", cfg.HassName),
+		},
 		"name": cfg.HassDisplayName,
 		"model": "Rigctld",
 		"manufacturer": "G4IYT",
