@@ -2,6 +2,8 @@
 
 I wanted to do some Home Assistant Automation involving my radio gear and needed to know the current frequency/band and PTT state for my rigs. This project will regularly poll a `rigctld` instance and send the current state to an MQTT broker.
 
+This is read only for now, I don't currently have a requirement to send commands from MQTT back to `rigctld` but have left the topic structure open so it may be added in the future.
+
 ## Installing
 
 ```
