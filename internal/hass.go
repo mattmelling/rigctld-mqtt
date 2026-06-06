@@ -25,6 +25,7 @@ func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *
 		sensorConfig := map[string]interface{}{
 			"name": sensor.HAName,
 			"unique_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
+			"object_id": fmt.Sprintf("%s_%s", cfg.HassName, sensor.Name),
 			"state_topic": fmt.Sprintf("%s/state/%s", cfg.Topic, sensor.Name),
 			"icon": sensor.HAIcon,
 			"device": generateDeviceIdentifier(cfg),
