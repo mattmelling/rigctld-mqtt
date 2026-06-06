@@ -37,11 +37,13 @@ func PublishHassDiscovery(mqttClient mqtt.Client, sensors []RigctldSensor, cfg *
 
 		payload, err := json.Marshal(sensorConfig)
 		if err != nil {
-			log.Printf("Failed to marshal sensor config: %v", err)
-			return
+			log.Printf("Failed to marshal sensor config for %s: %v", sensor.Name, err)
+			continue
 		}
-		
+
 		token := mqttClient.Publish(topic, 1, true, payload)
-		token.Wait()
+		if token.Wait() && token.Error() != nil {
+			log.Printf("Failed to publish discovery for %s: %v", sensor.Name, token.Error())
+		}
 	}
 }

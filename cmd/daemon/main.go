@@ -77,7 +77,10 @@ func main() {
 			case res := <-resultsChan:
 				// log.Printf("%s = %s", res.Command, res.Response)
 				topic := fmt.Sprintf("%s/state/%s", cfg.Topic, res.Name)
-				mqttClient.Publish(topic, 1, false, res.Response)
+				token := mqttClient.Publish(topic, 1, false, res.Response)
+				if token.Wait() && token.Error() != nil {
+					log.Printf("Failed to publish state for %s: %v", res.Name, token.Error())
+				}
 			case <-ctx.Done():
 				return
 			}
