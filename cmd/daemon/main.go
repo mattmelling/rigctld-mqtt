@@ -19,20 +19,20 @@ var sensors = []RigctldSensor {
 		Name: "frequency",
 		HAName: "Frequency",
 		HAUnit: "Hz",
-		HAIcon: "mdi:radio-tower",
+		HAIcon: "mdi:sine-wave",
 	},
 	{
 		Command: "m",
 		Name: "mode",
 		HAName: "Mode",
 		HAUnit: "",
-		HAIcon: "mdi:wave-form",
+		HAIcon: "mdi:microphone",
 	},
 	{
 		Command: "t",
 		Name: "ptt",
 		HAName: "PTT",
-		HAIcon: "mdi:radio-tower",
+		HAIcon: "mdi:gesture-tap-button",
 	},
 }
 
