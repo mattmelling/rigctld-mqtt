@@ -59,6 +59,13 @@ func main() {
 	opts.SetAutoReconnect(true)
 	opts.SetConnectTimeout(5 * time.Second)
 
+	if cfg.HassDiscovery {
+		opts.SetOnConnectHandler(func(c mqtt.Client) {
+			log.Printf("MQTT connected, publishing discovery")
+			internal.PublishHassDiscovery(c, sensors, cfg)
+		})
+	}
+
 	mqttClient := mqtt.NewClient(opts)
 	log.Printf("Connecting to %s", cfg.MqttAddr)
 	if token := mqttClient.Connect(); token.Wait() && token.Error() != nil {
